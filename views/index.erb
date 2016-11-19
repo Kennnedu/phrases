@@ -3,3 +3,9 @@
 <% @phrases.each do |phrase| %>
   <p><a href="/edit_phrase/<%= phrase.id %>"><%= phrase.name %></a></p>
 <% end %>
+
+<% @users.each do |user| %>
+  <%= user.username %>
+  <%= user.password %>
+  <br>
+<% end %>
