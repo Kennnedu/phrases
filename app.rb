@@ -12,20 +12,12 @@ class Application < Sinatra::Base
     erb :index, layout: :application, local: @phrases
   end
 
-  get '/sign_in' do
-    erb :login, layout: :application
-  end
-
-  get '/sign_up' do
-    erb :registration, layout: :application
-  end
-
   get '/new_phrase' do
     erb :new_phrase, layout: :application
   end
 
   post '/create_phrase' do
-    @phrase = Phrase.create(params[:phrase])
+    @phrase = Phrase.create!(params[:phrase])
     redirect "/"
     raise
     redirect "/"
@@ -33,6 +25,24 @@ class Application < Sinatra::Base
   end
 
   get '/edit_phrase/:id' do
-    erb :edit, layout: :application
+    @phrase = Phrase.find(params[:id])
+    erb :edit_phrase, layout: :application, local: @phrase
+  end
+
+  post '/update_phrase' do
+    @phrase = Phrase.find(params[:phrase][:id])
+    @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
+    redirect "/"
+    raise
+    redirect "/"
+    "alaksjghdfk"
+  end
+
+  get '/sign_in' do
+    erb :login, layout: :application
+  end
+
+  get '/sign_up' do
+    erb :registration, layout: :application
   end
 end
