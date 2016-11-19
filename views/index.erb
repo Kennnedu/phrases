@@ -1,4 +1,5 @@
 <h2>Main Page</h2>
+<a href="/new_phrase">New phrase</a>
 <% @phrases.each do |phrase| %>
-  <% %>
+  <p><%= phrase.name %></p>
 <% end %>
