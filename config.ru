@@ -1,6 +1,3 @@
-require 'bundler'
-Bundler.require
+require './app'
 
-require_relative 'app.rb'
-
-run App.new
+run Application.new

@@ -1,8 +1,18 @@
-class App < Sinatra::Base
+require 'sinatra'
+require 'sinatra/activerecord'
+Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
+
+set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
+
+class Application < Sinatra::Base
+  register Sinatra::ActiveRecordExtension
+
   get '/' do
-    erb :index, layout: :application #, locals: { arr: }
+    @phrases = Phrase.all
+    erb :index, layout: :application, local: @phrases
   end
-  get '/sin_in' do
+  
+  get '/sign_in' do
     erb :login, layout: :application
   end
 
@@ -11,7 +21,7 @@ class App < Sinatra::Base
   end
 
   get '/new_phrase' do
-    erb :new, layout: :application
+    erb :new_phrase, layout: :application
   end
 
   get '/edit_phrase/:id' do
@@ -19,6 +29,5 @@ class App < Sinatra::Base
   end
 
   post '/create_phrase/:name' do
-
   end
 end
