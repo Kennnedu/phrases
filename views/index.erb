@@ -4,6 +4,12 @@
   <p><a href="/edit_phrase/<%= phrase.id %>"><%= phrase.name %></a></p>
 <% end %>
 
+<form action="/logout" method="post">
+  <input type="submit" value="Logout">
+</form>
+
+<h3><%= @session %></h3>
+
 <% @users.each do |user| %>
   <%= user.username %>
   <%= user.password %>
