@@ -1,10 +1,12 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
+Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
 
 set :database, { adapter: 'sqlite3', database: 'foo.sqlite3' }
 
 class Application < Sinatra::Base
+  include Helpers
   register Sinatra::ActiveRecordExtension
   use Rack::Session::Cookie
 
@@ -28,11 +30,12 @@ class Application < Sinatra::Base
   end
 
   post '/create_phrase' do
-    Phrase.create!(params[:phrase])
-    redirect "/"
-    raise
-    redirect "/"
-    'Validate error'
+    begin
+      Phrase.create!(params[:phrase])
+      redirect "/"
+    rescue
+      redirect "/"
+    end
   end
 
   before '/edit_phrase/:id' do
@@ -45,12 +48,14 @@ class Application < Sinatra::Base
   end
 
   post '/update_phrase' do
-    @phrase = Phrase.find(params[:phrase][:id])
-    @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
-    redirect '/'
-    raise
-    redirect '/'
-    'alaksjghdfk'
+    begin
+      @phrase = Phrase.find(params[:phrase][:id])
+      CheckWord.new.call(params[:phrase][:name])
+      @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
+      redirect '/'
+    rescue
+      redirect '/'
+    end
   end
 
   before '/sign_up' do
@@ -62,12 +67,13 @@ class Application < Sinatra::Base
   end
 
   post '/create_user' do
-    User.create!(params[:user])
-    session[:username] = params[:user][:username]
-    redirect '/'
-    raise
-    redirect '/'
-    'kasjhdgfkajsvdf'
+    begin
+      User.create!(params[:user])
+      session[:username] = params[:user][:username]
+      redirect '/'
+    rescue
+      redirect '/'
+    end
   end
 
   before '/sign_in' do
@@ -91,15 +97,5 @@ class Application < Sinatra::Base
   post '/logout' do
     session.clear
     redirect '/sign_in'
-  end
-
-  private 
-
-  def authorize
-    redirect '/sign_in' if session[:username].nil?
-  end
-
-  def not_authorize
-    redirect '/' if session[:username]
   end
 end
