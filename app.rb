@@ -31,10 +31,11 @@ class Application < Sinatra::Base
 
   post '/create_phrase' do
     begin
-      Phrase.create!(params[:phrase])
-      redirect "/"
+      @phrase = Phrase.create!(params[:phrase])
+      @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id)
+      redirect '/'
     rescue
-      redirect "/"
+      redirect '/'
     end
   end
 
@@ -43,7 +44,7 @@ class Application < Sinatra::Base
   end
 
   get '/edit_phrase/:id' do
-    @phrase = Phrase.find(params[:id])
+    @phrase = Phrase.eager_load(:histories).find(params[:id])
     erb :edit_phrase, layout: :application, local: @phrase
   end
 
@@ -52,6 +53,7 @@ class Application < Sinatra::Base
       @phrase = Phrase.find(params[:phrase][:id])
       CheckWord.new.call(params[:phrase][:name])
       @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
+      @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id)
       redirect '/'
     rescue
       redirect '/'
