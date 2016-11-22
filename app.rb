@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/flash'
 require 'sinatra/activerecord'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
@@ -9,6 +10,7 @@ class Application < Sinatra::Base
   include Helpers
   register Sinatra::ActiveRecordExtension
   use Rack::Session::Cookie
+  register Sinatra::Flash
 
   before '/' do
     authorize
@@ -32,9 +34,12 @@ class Application < Sinatra::Base
   post '/create_phrase' do
     begin
       @phrase = Phrase.create!(params[:phrase])
-      @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id)
+      @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
+                                                      part_phrase: @phrase.name)
+      flash[:info] = 'The phrase was successfull created!'
       redirect '/'
     rescue
+      flash[:warning] = 'The phrase wasn\'t create!'
       redirect '/'
     end
   end
@@ -50,12 +55,16 @@ class Application < Sinatra::Base
 
   post '/update_phrase' do
     begin
+      @user = User.find_by(username: session[:username])
       @phrase = Phrase.find(params[:phrase][:id])
       CheckWord.new.call(params[:phrase][:name])
+      CheckOneTime.new.call(@phrase.histories.last.user.id, @user.id)
       @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
-      @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id)
+      @phrase.histories.create!(user_id: @user.id, part_phrase: @phrase.name)
+      flash[:info] = 'The word was successfull added!'
       redirect '/'
     rescue
+      flash[:warning] = 'The word wasn\'t added!' 
       redirect '/'
     end
   end
@@ -72,8 +81,10 @@ class Application < Sinatra::Base
     begin
       User.create!(params[:user])
       session[:username] = params[:user][:username]
+      flash[:info] = 'You successfull create self account!'
       redirect '/'
     rescue
+      flash[:warning] = 'Wrong data!'
       redirect '/'
     end
   end
@@ -90,8 +101,10 @@ class Application < Sinatra::Base
     @user = User.where(username: params[:user][:username])
     if @user.first.present? && @user.first.password == params[:user][:password]
       session[:username] = @user.first.username
+      flash[:info] = 'You successfull authorize!'
       redirect '/'
     else
+      flash[:warning] = 'Your username or password incorrect!'
       redirect '/sign_in'
     end
   end

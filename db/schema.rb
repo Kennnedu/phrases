@@ -15,8 +15,9 @@ ActiveRecord::Schema.define(version: 20161120181734) do
   create_table "histories", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "phrase_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "part_phrase", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["phrase_id"], name: "index_histories_on_phrase_id"
     t.index ["user_id"], name: "index_histories_on_user_id"
   end
