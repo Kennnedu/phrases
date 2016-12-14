@@ -18,7 +18,6 @@ class Application < Sinatra::Base
 
   get '/' do
     @phrases = Phrase.all
-    @users = User.all
     @session = session[:username]
     erb :index, layout: :application
   end

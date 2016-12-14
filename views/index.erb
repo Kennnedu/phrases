@@ -1,7 +1,7 @@
 <h2>Main Page</h2>
 <a href="/new_phrase">New phrase</a>
 <% @phrases.each do |phrase| %>
-  <p><a href="/edit_phrase/<%= phrase.id %>"><%= phrase.name %></a></p>
+  <p><div class="phrase"><a href="/edit_phrase/<%= phrase.id %>"><%= phrase.name %></a></div></p>
 <% end %>
 
 <form action="/logout" method="post">
@@ -9,9 +9,3 @@
 </form>
 
 <h3><%= @session %></h3>
-
-<% @users.each do |user| %>
-  <%= user.username %>
-  <%= user.password %>
-  <br>
-<% end %>
