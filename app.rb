@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
+require 'sinatra/base'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
 

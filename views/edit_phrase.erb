@@ -9,10 +9,11 @@
   <% end %>
 </div>
 
-<form action="/update_phrase" method="post" role="form">
-  <input type="hidden" name="phrase[id]" value="<%= @phrase.id %>">
-  <label>Phrase: </label>
-  <%= @phrase.name %>
-  <input type="text" name="phrase[name]" />
-  <input type="submit" value="Submit" />
+<form action="/update_phrase" method="post" role="form" class="form-inline">
+  <div class="form-group">
+    <input type="hidden" name="phrase[id]" value="<%= @phrase.id %>">
+    <%= @phrase.name %>
+    <input type="text" name="phrase[name]" class="form-control" placeholder="Continue phrase" />
+  </div>
+  <input class="btn btn-primary" type="submit" value="Submit" />
 </form>
