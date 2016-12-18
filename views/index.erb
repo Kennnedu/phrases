@@ -1,11 +1,62 @@
-<h2>Main Page</h2>
-<a href="/new_phrase">New phrase</a>
-<% @phrases.each do |phrase| %>
-  <p><div class="phrase"><a href="/edit_phrase/<%= phrase.id %>"><%= phrase.name %></a></div></p>
-<% end %>
+<!-- <h2>Main Page</h2>
+ -->
+<div class="row">
+  <div class="col-md-4">
+    <h3>Welcome, <%= @session %>, to Main Page!</h3>
+  </div>
+  <div class="col-md-4 col-md-offset-4">
+    <form action="/logout" method="post">
+      <input class="btn btn-danger" type="submit" value="Logout">
+    </form>
+  </div>
+</div>
 
-<form action="/logout" method="post">
-  <input class="btn btn-danger" type="submit" value="Logout">
-</form>
+<div class="row">
+  <!-- <a class="btn btn-primary" href="/new_phrase">New phrase</a> -->
+  <div class="col-md-1">
+    <button class="btn btn-primary" id="new-phrase">New phrase</button>
+    <button class="btn btn-danger" id="hide-new-phrase">Hide</button>
+  </div>
 
-<h3><%= @session %></h3>
+  <div class="col-md-4" id="create-phrase">
+    <form action="/create_phrase" method="post" role="form" class="form-inline">
+      <div class="form-group">
+        <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" />
+      </div>
+        <input class="btn btn-primary" type="submit" value="Create" />
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+  <table class="table">
+    <thead>
+      <th>
+        List
+      </th>
+    </thead>
+    <tbody>
+      <% @phrases.each do |phrase| %>
+        <tr>
+          <td>
+              <!-- <a href="/edit_phrase/<%= phrase.id %>"><%#= phrase.name %></a> -->
+            <div class="phrase" data-id="<%= phrase.id %>">
+              <%= phrase.name %>
+            </div>
+            <div class="edit-phrase" id="edit-phrase-id-<%= phrase.id %>">
+              <form action="/update_phrase" method="post" role="form" class="form-inline update-phrase">
+                <div class="form-group">
+                  <input type="hidden" name="phrase[id]" value="<%= phrase.id %>">
+                  <input type="text" name="phrase[name]" class="form-control" id="phrase-name-<%= phrase.id %>" placeholder="Continue phrase" />
+                </div>
+                <input class="btn btn-primary" type="submit" data-id="<%= phrase.id %>" value="Add" />
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

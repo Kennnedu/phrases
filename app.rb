@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require 'sinatra/base'
+require 'sinatra/json'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
 
@@ -37,6 +38,7 @@ class Application < Sinatra::Base
       @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
                                                       part_phrase: @phrase.name)
       flash[:info] = 'The phrase was successfull created!'
+      json({phrase: @phrase.name}, encoder: :to_json, content_type: :js)
       redirect '/'
     rescue
       flash[:warning] = 'The phrase wasn\'t create!'
@@ -54,6 +56,9 @@ class Application < Sinatra::Base
   end
 
   post '/update_phrase' do
+    puts JSON.parse(request.body.read).symbolize_keys
+    puts 'mashd'
+    raise
     begin
       @user = User.find_by(username: session[:username])
       @phrase = Phrase.find(params[:phrase][:id])
