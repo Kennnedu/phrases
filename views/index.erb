@@ -14,16 +14,16 @@
 <div class="row">
   <!-- <a class="btn btn-primary" href="/new_phrase">New phrase</a> -->
   <div class="col-md-1">
-    <button class="btn btn-primary" id="new-phrase">New phrase</button>
+    <button class="btn btn-primary" id="add-phrase">New phrase</button>
     <button class="btn btn-danger" id="hide-new-phrase">Hide</button>
   </div>
 
-  <div class="col-md-4" id="create-phrase">
-    <form action="/create_phrase" method="post" role="form" class="form-inline">
+  <div class="col-md-4" id="new-phrase">
+    <form action="/create_phrase" method="post" role="form" class="form-inline create-phrase">
       <div class="form-group">
-        <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" />
+        <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" id="name-phrase" />
       </div>
-        <input class="btn btn-primary" type="submit" value="Create" />
+        <input class="btn btn-primary" type="submit" value="Create"/>
     </form>
   </div>
 </div>
@@ -36,7 +36,7 @@
         List
       </th>
     </thead>
-    <tbody>
+    <tbody class="phrases">
       <% @phrases.each do |phrase| %>
         <tr>
           <td>
@@ -59,4 +59,3 @@
     </tbody>
   </table>
 </div>
-

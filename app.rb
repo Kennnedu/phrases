@@ -2,7 +2,8 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require 'sinatra/base'
-require 'sinatra/json'
+# require 'sinatra/json'
+require 'json'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
 
@@ -37,12 +38,13 @@ class Application < Sinatra::Base
       @phrase = Phrase.create!(params[:phrase])
       @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
                                                       part_phrase: @phrase.name)
-      flash[:info] = 'The phrase was successfull created!'
-      json({phrase: @phrase.name}, encoder: :to_json, content_type: :js)
-      redirect '/'
+      { id: @phrase.id, phrase: @phrase.name }.to_json
+      # flash[:info] = 'The phrase was successfull created!'
+      # redirect '/'
     rescue
-      flash[:warning] = 'The phrase wasn\'t create!'
-      redirect '/'
+      { message: 'Error!' }.to_json
+      # flash[:warning] = 'The phrase wasn\'t create!'
+      # redirect '/'
     end
   end
 
@@ -56,9 +58,6 @@ class Application < Sinatra::Base
   end
 
   post '/update_phrase' do
-    puts JSON.parse(request.body.read).symbolize_keys
-    puts 'mashd'
-    raise
     begin
       @user = User.find_by(username: session[:username])
       @phrase = Phrase.find(params[:phrase][:id])
@@ -66,11 +65,13 @@ class Application < Sinatra::Base
       CheckOneTime.new.call(@phrase.histories.last.user.id, @user.id)
       @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
       @phrase.histories.create!(user_id: @user.id, part_phrase: @phrase.name)
-      flash[:info] = 'The word was successfull added!'
-      redirect '/'
+      { id: @phrase.id, phrase: @phrase.name, status: 200 }.to_json
+      # flash[:info] = 'The word was successfull added!'
+      # redirect '/'
     rescue
-      flash[:warning] = 'The word wasn\'t added!' 
-      redirect '/'
+      { message: 'The word wasn\'t added!', status: 404 }.to_json
+      # flash[:warning] = 'The word wasn\'t added!' 
+      # redirect '/'
     end
   end
 
