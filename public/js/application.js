@@ -15,7 +15,6 @@ $(document).ready(function () {
 
   $('.update-phrase').submit(function(ev){
     var phrase_tag = $(this).parent().siblings();
-    debugger;
     ev.preventDefault();
 
     $.post('/update_phrase', $(this).serialize()).done(function(data){
