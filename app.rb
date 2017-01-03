@@ -37,6 +37,8 @@ class Application < Sinatra::Base
   post '/create_phrase' do
     begin
       @phrase = Phrase.create!(params[:phrase])
+      puts @phrase.name
+      puts session[:username]
       @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
                                                       part_phrase: @phrase.name)
       { id: @phrase.id, phrase: @phrase.name }.to_json
