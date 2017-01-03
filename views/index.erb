@@ -1,5 +1,3 @@
-<!-- <h2>Main Page</h2>
- -->
 <div class="row">
   <div class="col-md-4">
     <h3>Welcome, <%= @session %>, to Main Page!</h3>
@@ -12,7 +10,6 @@
 </div>
 
 <div class="row">
-  <!-- <a class="btn btn-primary" href="/new_phrase">New phrase</a> -->
   <div class="col-md-1">
     <button class="btn btn-primary" id="add-phrase">New phrase</button>
     <button class="btn btn-danger" id="hide-new-phrase">Hide</button>
@@ -35,12 +32,12 @@
       <th>
         List
       </th>
+      <th></th>
     </thead>
     <tbody class="phrases">
       <% @phrases.each do |phrase| %>
         <tr>
           <td>
-              <!-- <a href="/edit_phrase/<%= phrase.id %>"><%#= phrase.name %></a> -->
             <div class="phrase" data-id="<%= phrase.id %>">
               <%= phrase.name %>
             </div>
@@ -53,6 +50,9 @@
                 <input class="btn btn-primary" type="submit" data-id="<%= phrase.id %>" value="Add" />
               </form>
             </div>
+          </td>
+          <td>
+            <a href="/edit_phrase/<%= phrase.id %>" class="btn btn-warning">Edit</a>
           </td>
         </tr>
       <% end %>

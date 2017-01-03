@@ -38,12 +38,8 @@ class Application < Sinatra::Base
       @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
                                                       part_phrase: @phrase.name)
       { id: @phrase.id, phrase: @phrase.name }.to_json
-      # flash[:info] = 'The phrase was successfull created!'
-      # redirect '/'
     rescue
       { message: 'Error!' }.to_json
-      # flash[:warning] = 'The phrase wasn\'t create!'
-      # redirect '/'
     end
   end
 
@@ -65,12 +61,8 @@ class Application < Sinatra::Base
       @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
       @phrase.histories.create!(user_id: @user.id, part_phrase: @phrase.name)
       { id: @phrase.id, phrase: @phrase.name, status: 200 }.to_json
-      # flash[:info] = 'The word was successfull added!'
-      # redirect '/'
     rescue
       { message: 'The word wasn\'t added!', status: 404 }.to_json
-      # flash[:warning] = 'The word wasn\'t added!' 
-      # redirect '/'
     end
   end
 
