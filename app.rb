@@ -6,7 +6,9 @@ require 'json'
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
 
-set :database, { adapter: 'postgresql' }
+set :database, { adapter: 'postgresql',
+  encoding: 'unicode', database: 'your_database_name', pool: 2,
+  username: 'roman', password: 'password'}
 
 class Application < Sinatra::Base
   include Helpers

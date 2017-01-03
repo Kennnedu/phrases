@@ -12,14 +12,17 @@
 
 ActiveRecord::Schema.define(version: 20161120181734) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "histories", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "phrase_id"
     t.string   "part_phrase", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["phrase_id"], name: "index_histories_on_phrase_id"
-    t.index ["user_id"], name: "index_histories_on_user_id"
+    t.index ["phrase_id"], name: "index_histories_on_phrase_id", using: :btree
+    t.index ["user_id"], name: "index_histories_on_user_id", using: :btree
   end
 
   create_table "phrases", force: :cascade do |t|
@@ -33,7 +36,7 @@ ActiveRecord::Schema.define(version: 20161120181734) do
     t.string   "password",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["username"], name: "index_users_on_username"
+    t.index ["username"], name: "index_users_on_username", using: :btree
   end
 
 end
