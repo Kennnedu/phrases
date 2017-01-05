@@ -41,7 +41,7 @@ $(document).ready(function () {
               '<input type="hidden" name="phrase[id]" value="'+data.id+'">'+
               '<input type="text" name="phrase[name]" class="form-control" id="phrase-name-'+data.id+'" placeholder="Continue phrase" />'+
             '</div> <input class="btn btn-primary" type="submit" data-id="'+data.id+'" value="Add" />'+
-              '</form></div></td></tr>');
+              '</form></div></td><td><a href="/edit_phrase/'+data.id+'" class="btn btn-warning">Edit</a></td></tr>');
       editPhrase();
     })
     .fail(function(data){
