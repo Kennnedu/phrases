@@ -1,61 +1,24 @@
-<div class="row">
-  <div class="col-md-4">
-    <h3>Welcome, <%= @session %>, to Main Page!</h3>
-  </div>
+<div class="row" ng-controller="indexCtrl">
   <div class="col-md-4 col-md-offset-4">
-    <form action="/logout" method="post">
-      <input class="btn btn-danger" type="submit" value="Logout">
-    </form>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-1">
-    <button class="btn btn-primary" id="add-phrase">New phrase</button>
-    <button class="btn btn-danger" id="hide-new-phrase">Hide</button>
-  </div>
-
-  <div class="col-md-4" id="new-phrase">
-    <form action="/create_phrase" method="post" role="form" class="form-inline create-phrase">
+    <form class="form-inline" ng-submit="createPhrase()">
       <div class="form-group">
-        <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" id="name-phrase" />
+        <input class="form-control" type="text" name="phrase" ng-model="newPhrase.name" placeholder="New Phrase" required />
       </div>
         <input class="btn btn-primary" type="submit" value="Create"/>
     </form>
-  </div>
-</div>
+    <table class="table">
+      <thead>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody class="phrases">
 
-<div class="row">
-  <div class="col-md-4 col-md-offset-4">
-  <table class="table">
-    <thead>
-      <th>
-        List
-      </th>
-      <th></th>
-    </thead>
-    <tbody class="phrases">
-      <% @phrases.each do |phrase| %>
-        <tr>
-          <td>
-            <div class="phrase" data-id="<%= phrase.id %>">
-              <%= phrase.name %>
-            </div>
-            <div class="edit-phrase" id="edit-phrase-id-<%= phrase.id %>">
-              <form action="/update_phrase" method="post" role="form" class="form-inline update-phrase">
-                <div class="form-group">
-                  <input type="hidden" name="phrase[id]" value="<%= phrase.id %>">
-                  <input type="text" name="phrase[name]" class="form-control" id="phrase-name-<%= phrase.id %>" placeholder="Continue phrase" />
-                </div>
-                <input class="btn btn-primary" type="submit" data-id="<%= phrase.id %>" value="Add" />
-              </form>
-            </div>
-          </td>
-          <td>
-            <a href="/edit_phrase/<%= phrase.id %>" class="btn btn-warning">Edit</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          <tr ng-repeat="phrase in phrases">
+            <td><edit-phrase phrase="phrase"></edit-phrase></td>
+
+              <!-- <a href="#" ng-click><span class="glyphicon glyphicon-pencil"></span></a> -->
+          </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
