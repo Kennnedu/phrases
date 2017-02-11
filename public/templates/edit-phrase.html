@@ -1,8 +1,13 @@
-<div class="row">
-    <div class="col-md-8">
+<div class="col-lg-offset-4 col-lg-8">
+    <div>
         {{phrase.name}}
     </div>
-    <div class="col-md-2 col-md-offset-2">
-        <a href="#" ng-click="removePhrase()"><span class="glyphicon glyphicon-remove"></span></a>
-    </div>
+    <a href="#" ng-click="toggleEdit()"><span class="glyphicon glyphicon-edit"></span></a>
+    <a href="#" ng-click="removePhrase()"><span class="glyphicon glyphicon-remove"></span></a>  
+    <form ng-hide="visibleEdit" ng-submit="updatePhrase()">
+        <div class="form-group">
+            <input class="form-control" type="text" name="phrase" placeholder="Add word" ng-model="newWord">
+            <input class="btn btn-primary" type="submit">
+        </div>
+    </form>
 </div>

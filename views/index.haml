@@ -1,0 +1,29 @@
+!!!
+%html{"ng-app" => "Phrases"}
+  %head
+    %title Phrases
+    %meta{:charset => "utf-8"}/
+    %link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
+    %script{:src => "/js/angular.min.js"}
+    %script{:src => "/js/index_ctrl.js"}
+    %script{:src => "/js/directives/editPhrase.js"}
+  %body
+    .container{"ng-controller" => "indexCtrl"}
+      %nav.navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            %a.navbar-brand{:href => "#"}
+              Phrases
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            %form.navbar-form.navbar-left{"ng-submit" => "createPhrase()"}
+              .form-group
+                %input.form-control{ placeholder: "New Phrase", :type => "text", :name => "phrase", "ng-model" => "newPhrase.name", :required => "" }/
+              %input.btn.btn-default{:type => "submit", :value => "Create"}
+            %ul.nav.navbar-nav.navbar-right
+              %li
+                %a.navbar-right{:href => "#"}
+                  %i.glyphicon.glyphicon-log-out
+      %div.row{"ng-repeat" => "phrase  in phrases"}
+        .row
+          %edit-phrase{:phrase => "phrase"}
+        %br

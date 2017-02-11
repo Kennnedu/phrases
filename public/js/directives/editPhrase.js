@@ -5,9 +5,9 @@ angular.module('Phrases').directive('editPhrase', function editPhrase($http){
     scope: {
       phrase: "="
     },
-    templateUrl: 'templates/edit-phrase.html',
+    templateUrl: '../templates/edit-phrase.html',
     link: function($scope, element){
-
+      $scope.visibleEdit = true;
       $scope.removePhrase = function(){
         $http({
           method: 'DELETE',
@@ -15,14 +15,30 @@ angular.module('Phrases').directive('editPhrase', function editPhrase($http){
         }).then( function successCallback(response){
           console.log(response);
           $scope.phrase = {};
-          element.empty();
+          element.parent().parent().empty();
         }, function errorCallback(response){
           console.log(response);
         });
       }
 
-      // $scope.editPhrase = function(){
-      // }
+      $scope.updatePhrase = function(){
+        $http({
+          method: 'PUT',
+          url: '/phrase/'+ $scope.phrase.id,
+          data: { phrase: $scope.phrase.name + ' ' + $scope.newWord }
+        }).then(function successCallback(response){
+          console.log(response)
+          $scope.phrase.name = response.data.phrase
+          $scope.newWord = "";
+          $scope.toggleEdit();
+        }, function errorCallback(response){
+          console.log(response);
+        });
+      }
+
+      $scope.toggleEdit = function(){
+        $scope.visibleEdit = !$scope.visibleEdit;
+      }
     }
   }
 });

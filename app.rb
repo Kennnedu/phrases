@@ -15,7 +15,7 @@ class Application < Sinatra::Base
   use Rack::Session::Cookie
 
   get '/' do
-    erb :index, layout: :application
+    haml :index
   end
 
   get '/phrases' do
@@ -23,14 +23,15 @@ class Application < Sinatra::Base
   end
 
   post '/phrase' do
-    params_json = JSON.parse request.body.read
+    params_json = JSON.parse(request.body.read)
     { phrase: Phrase.create(params_json['phrase']) }.to_json
   end
 
   put '/phrase/:id' do
-    binding.pry
-      @phrase = Phrase.find(params[:phrase][:id])
-      { phrase: @phrase.update(name: "#{@phrase.name} #{params[:phrase][:name]}") }.to_json
+    params_json = JSON.parse(request.body.read)
+    @phrase = Phrase.find(params[:id])
+    @phrase.update(name: params_json['phrase'])
+    { phrase: @phrase.name }.to_json
   end
 
   delete '/phrase/:id' do
@@ -38,15 +39,9 @@ class Application < Sinatra::Base
   end
 
   # post '/create_user' do
-  #   begin
-  #     User.create!(params[:user])
-  #     session[:username] = params[:user][:username]
-  #     flash[:info] = 'You successfull create self account!'
-  #     redirect '/'
-  #   rescue
-  #     flash[:warning] = 'Wrong data!'
-  #     redirect '/'
-  #   end
+  #   User.create!(params[:user])
+  #   session[:username] = params[:user][:username]
+  #   flash[:info] = 'You successfull create self account!'
   # end
   #
   # post '/loggin' do
