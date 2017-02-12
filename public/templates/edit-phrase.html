@@ -4,7 +4,7 @@
     </div>
     <a href="#" ng-click="toggleEdit()"><span class="glyphicon glyphicon-edit"></span></a>
     <a href="#" ng-click="removePhrase()"><span class="glyphicon glyphicon-remove"></span></a>  
-    <form ng-hide="visibleEdit" ng-submit="updatePhrase()">
+    <form ng-hide="visibleEdit" ng-submit="updatePhrase()" class="form-inline">
         <div class="form-group">
             <input class="form-control" type="text" name="phrase" placeholder="Add word" ng-model="newWord">
             <input class="btn btn-primary" type="submit">
