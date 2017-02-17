@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+
   $('#add-phrase').on('click', function(){
     $('#new-phrase').toggle('display');
     $(this).attr('style', 'display: none');
@@ -29,24 +31,26 @@ $(document).ready(function () {
 
     ev.preventDefault();
 
-    $.post('/create_phrase', $(this).serialize()).done(function(data){
-      data = $.parseJSON(data);
-      console.log(data);
-      $('#name-phrase').val('')
-      $('.phrase').off("click");
-      $('.phrases').append('<tr><td><div class="phrase" data-id="'+data.id+'">'+data.phrase+'</div>'+
-        '<div class="edit-phrase" id="edit-phrase-id-'+data.id+'">'+
-          '<form action="/update_phrase" method="post" role="form" class="form-inline update-phrase">'+
-            '<div class="form-group">'+
-              '<input type="hidden" name="phrase[id]" value="'+data.id+'">'+
-              '<input type="text" name="phrase[name]" class="form-control" id="phrase-name-'+data.id+'" placeholder="Continue phrase" />'+
-            '</div> <input class="btn btn-primary" type="submit" data-id="'+data.id+'" value="Add" />'+
-              '</form></div></td><td><a href="/edit_phrase/'+data.id+'" class="btn btn-warning">Edit</a></td></tr>');
-      editPhrase();
-    })
-    .fail(function(data){
+    var newPhrase = $(this).children('div').children('#name-phrase').val();
+    ws.send(JSON.stringify({ method: 'create', phrase: newPhrase}));
 
-    });
+    // $.post('/create_phrase', $(this).serialize()).done(function(data){
+    //   data = $.parseJSON(data);
+    //   console.log(data);
+    //   var newPhrase = '<tr><td><div class="phrase" data-id="'+data.id+'">'+data.phrase+'</div>'+
+    //     '<div class="edit-phrase" id="edit-phrase-id-'+data.id+'">'+
+    //     '<form action="/update_phrase" method="post" role="form" class="form-inline update-phrase">'+
+    //     '<div class="form-group">' + '<input type="hidden" name="phrase[id]" value="'+data.id+'">'+
+    //     '<input type="text" name="phrase[name]" class="form-control" id="phrase-name-'+data.id+'" placeholder="Continue phrase" />'+
+    //     '</div> <input class="btn btn-primary" type="submit" data-id="'+data.id+'" value="Add" />'+
+    //     '</form></div></td><td><a href="/edit_phrase/'+data.id+'" class="btn btn-warning">Edit</a></td></tr>';
+    //   $('#name-phrase').val('')
+    //   $('.phrase').off("click");
+    //   $('.phrases').append(newPhrase);
+    //   editPhrase();
+    // })
+    // .fail(function(data){
+    // });
   });
 
   function editPhrase(){
@@ -54,5 +58,10 @@ $(document).ready(function () {
       var id = $(this).attr('data-id');
       $('#edit-phrase-id-'+id).toggle('display');
     });
+  }
+
+
+  ws.onmessage = function(m){
+    console.log('asfkhsfdgkh')
   }
 });
