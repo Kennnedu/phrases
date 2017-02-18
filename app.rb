@@ -6,9 +6,9 @@ require 'sinatra/base'
 require 'json'
 require 'pry'
 
-
-Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each {|file| require file }
-Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
+Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each { |file| require file }
+Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each { |file| require file }
+Dir[File.join(File.dirname(__FILE__), 'controllers', '*.rb')].each { |file| require file }
 
 include Helpers
 
@@ -21,6 +21,10 @@ set :server, 'thin'
 set :sockets, []
 register Sinatra::ActiveRecordExtension
 register Sinatra::Flash
+
+after do
+  ActiveRecord::Base.clear_active_connections!
+end 
 
 before '/' do
   authorize
@@ -38,13 +42,13 @@ get '/' do
         settings.sockets << ws
       end
       ws.onmessage do |msg|
-        puts msg
-        # binding.pry
         msg = JSON.parse(msg)
         if msg['method'] == 'create'
-          EM.next_tick { settings.sockets.each{|s| s.send("sdf") } }
+          response = create_phrase(msg['phrase'], session[:username])
+          EM.next_tick { settings.sockets.each{|s| s.send(response) } }
         elsif msg['method'] == 'update'
-          EM.next_tick { settings.sockets.each{|s| s.send(msg) } }
+          response = update_phrase(msg, session[:username])
+          EM.next_tick { settings.sockets.each{|s| s.send(response) } }
         end
       end
       ws.onclose do
@@ -63,19 +67,6 @@ get '/new_phrase' do
   erb :new_phrase, layout: :application
 end
 
-post '/create_phrase' do
-  begin
-    @phrase = Phrase.create!(params[:phrase])
-    puts @phrase.name
-    puts session[:username]
-    @phrase.histories.create!(user_id: User.find_by(username: session[:username]).id,
-      part_phrase: @phrase.name)
-    { id: @phrase.id, phrase: @phrase.name }.to_json
-  rescue
-    { message: 'Error!' }.to_json
-  end
-end
-
 before '/edit_phrase/:id' do
   authorize
 end
@@ -85,19 +76,6 @@ get '/edit_phrase/:id' do
   erb :edit_phrase, layout: :application, local: @phrase
 end
 
-post '/update_phrase' do
-  begin
-    @user = User.find_by(username: session[:username])
-    @phrase = Phrase.find(params[:phrase][:id])
-    CheckWord.new.call(params[:phrase][:name])
-    CheckOneTime.new.call(@phrase.histories.last.user.id, @user.id)
-    @phrase.update!(name: "#{@phrase.name} #{params[:phrase][:name]}")
-    @phrase.histories.create!(user_id: @user.id, part_phrase: @phrase.name)
-    { id: @phrase.id, phrase: @phrase.name, status: 200 }.to_json
-  rescue
-    { message: 'The word wasn\'t added!', status: 404 }.to_json
-  end
-end
 
 before '/sign_up' do
   not_authorize
@@ -144,3 +122,4 @@ post '/logout' do
   redirect '/sign_in'
 end
 
+# ActiveRecord::ConnectionTimeoutError
