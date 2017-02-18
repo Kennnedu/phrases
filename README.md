@@ -1,6 +1,6 @@
 # phrases
 
-[heroku](https://fierce-scrubland-13942.herokuapp.com/)
+[heroku](https://lit-retreat-52753.herokuapp.com/)
 
 Start Application
 
