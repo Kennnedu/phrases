@@ -1,18 +1,6 @@
 $(document).ready(function () {
   var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
 
-  $('#add-phrase').on('click', function(){
-    $('#new-phrase').toggle('display');
-    $(this).attr('style', 'display: none');
-    $('#hide-new-phrase').show();
-  });
-
-  $('#hide-new-phrase').on('click', function(){
-    $('#new-phrase').toggle('hide');
-    $(this).attr('style', 'display: none');
-    $('#add-phrase').attr('style', 'display: block');
-  });
-
   editPhrase();
 
   $('body').on('click','.update-phrase', function(ev){
@@ -24,13 +12,20 @@ $(document).ready(function () {
     ws.send(JSON.stringify({ method: 'update', id: id, phrase: word }))
   });
 
+  // $('body').on('click', function(e){
+  //   if($(e.target.classList)[0] == 'phrase'){
+  //     return
+  //   } else {
+  //     $('.edit-phrase').hide();
+  //   }
+  // });
+
   $('body').on('click', '.create-phrase', function(ev){
     ev.preventDefault();
 
     var newPhrase = $(this).children('div').children('#name-phrase').val();
     ws.send(JSON.stringify({ method: 'create', phrase: newPhrase}));
   });
-
 
   ws.onmessage = function(res){
     res = JSON.parse(res.data)
@@ -41,7 +36,6 @@ $(document).ready(function () {
     }
   }
 
-
   function createPhrase(data){
     var newPhrase = '<tr><td><div class="phrase" data-id="'+data.id+'">'+data.phrase+'</div>'+
       '<div class="edit-phrase" id="edit-phrase-id-'+data.id+'">'+
@@ -49,8 +43,7 @@ $(document).ready(function () {
       '<div class="form-group">' + '<input type="hidden" name="phrase[id]" value="'+data.id+'">'+
       '<input type="text" name="phrase[name]" class="form-control" id="phrase-name-'+data.id+'" placeholder="Continue phrase" />'+
       '</div> <input class="btn btn-primary" type="submit" data-id="'+data.id+'" value="Add" />'+
-      '</form></div></td><td><a href="/edit_phrase/'+data.id+'" class="btn btn-warning">Edit</a></td></tr>';
-
+      '</form></div></td><td><a href="/edit_phrase/'+data.id+'"><span class="glyphicon glyphicon-th-list"></span></a></td></tr>';
     $('#name-phrase').val('');
     $('.phrase').off("click");
     $('.phrases').append(newPhrase);

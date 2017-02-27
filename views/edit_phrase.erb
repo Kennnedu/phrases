@@ -1,19 +1,13 @@
-<h2>Edit Phrase</h2>
-<div>
-  <% @phrase.histories.each do |history| %>
-  <p>
-  <%= history.created_at %> -
-    <%= history.user.username %> |
-    <%= history.part_phrase %>
-  </p>
-  <% end %>
-</div>
-
-<form action="/update_phrase" method="post" role="form" class="form-inline">
-  <div class="form-group">
-    <input type="hidden" name="phrase[id]" value="<%= @phrase.id %>">
+<div class="col-md-4 col-md-offset-4">
+    <h2>History of Phrase</h2>
     <%= @phrase.name %>
-    <input type="text" name="phrase[name]" class="form-control" placeholder="Continue phrase" />
-  </div>
-  <input class="btn btn-primary" type="submit" value="Submit" />
-</form>
+    <div>
+      <% @phrase.histories.each do |history| %>
+      <p>
+      <%= history.created_at %> -
+        <%= history.user.username %> |
+        <%= history.part_phrase %>
+      </p>
+      <% end %>
+    </div>
+</div>

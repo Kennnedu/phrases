@@ -9,13 +9,27 @@
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/application.js"></script>
+    <script src="/js/notice.js"></script>
   </head>
   <body>
     <div class="container">
-      <div class="row">
-          <h1>Phrases</h1>
-      </div>
-        <%= styled_flash %>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/">Phrases</a>
+          </div>
+          <% if session[:username] %>
+            <form action="/logout" method="post" class="navbar-form navbar-right">
+              <input type="submit" value="Logout" class="btn btn-default"> 
+            </form>
+          <% end %>
+        </div>
+      </nav>
+      <%# if styled_flash.present? %>
+        <!-- <div class="col-md-8 col-md-offset-2 alert alert-success" id="flash-notice"> -->
+          <%#= styled_flash %>
+        <!-- </div> -->
+      <%# end %>
       <div class="row">
         <%= yield %>
       </div>
