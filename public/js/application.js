@@ -12,13 +12,13 @@ $(document).ready(function () {
     ws.send(JSON.stringify({ method: 'update', id: id, phrase: word }))
   });
 
-  // $('body').on('click', function(e){
-  //   if($(e.target.classList)[0] == 'phrase'){
-  //     return
-  //   } else {
-  //     $('.edit-phrase').hide();
-  //   }
+  // $('.dash-phrase').hover(function(){
+  //   $(this).css('background-color', '#265A88')
+  //   $(this).css('border-radius', '3px')
+  //   $(this).css('color', '#ffffff')
   // });
+
+  // $('.dash-phrase').
 
   $('body').on('click', '.create-phrase', function(ev){
     ev.preventDefault();
@@ -37,12 +37,12 @@ $(document).ready(function () {
   }
 
   function createPhrase(data){
-    var newPhrase = '<tr><td><div class="phrase" data-id="'+data.id+'">'+data.phrase+'</div>'+
+    var newPhrase = '<tr><td><div class="phrase" data-id="'+data.id+'">'+data.phrase+'</div><br>'+
       '<div class="edit-phrase" id="edit-phrase-id-'+data.id+'">'+
       '<form role="form" class="form-inline update-phrase">'+
       '<div class="form-group">' + '<input type="hidden" name="phrase[id]" value="'+data.id+'">'+
       '<input type="text" name="phrase[name]" class="form-control" id="phrase-name-'+data.id+'" placeholder="Continue phrase" />'+
-      '</div> <input class="btn btn-primary" type="submit" data-id="'+data.id+'" value="Add" />'+
+      '</div> <input class="btn btn-default" type="submit" data-id="'+data.id+'" value="Add" />'+
       '</form></div></td><td><a href="/edit_phrase/'+data.id+'"><span class="glyphicon glyphicon-th-list"></span></a></td></tr>';
     $('#name-phrase').val('');
     $('.phrase').off("click");

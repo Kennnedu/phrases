@@ -1,3 +1,9 @@
 .edit-phrase, #hide-new-phrase{
   display: none;
 }
+
+.dash-phrase:hover{
+    background-color: #265A88;
+    border-radius: 5px;
+    color: #ffffff;
+}
