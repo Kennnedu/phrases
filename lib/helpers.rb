@@ -24,7 +24,7 @@ module Helpers
     phrase.histories.create!(user_id: user.id, part_phrase: phrase.name)
     { method: 'update', id: phrase.id, phrase: phrase.name, status: 200 }.to_json
   rescue
-    { message: 'The word wasn\'t added!', status: 404 }.to_json
+    { method: 'update', message: 'The word wasn\'t added!', status: 404 }.to_json
   end
 
 private

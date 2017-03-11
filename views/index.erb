@@ -1,10 +1,10 @@
 
 <div class="col-md-4" id="new-phrase">
-  <form action="/create_phrase" method="post" role="form" class="form-inline create-phrase">
+  <form action="/create_phrase" method="post" role="form" class="form-inline">
     <div class="form-group">
       <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" id="name-phrase" />
     </div>
-    <input class="btn btn-primary" type="submit" value="Create"/>
+    <input class="btn btn-primary create-phrase" type="submit" value="Create"/>
   </form>
   <br>
   <div class="jumbotron">
@@ -31,12 +31,12 @@
           </div>
           <div class="edit-phrase" id="edit-phrase-id-<%= phrase.id %>">
             <br>
-            <form role="form" class="form-inline update-phrase">
+            <form role="form" class="form-inline">
               <div class="form-group">
                 <input type="hidden" name="phrase[id]" value="<%= phrase.id %>">
                 <input type="text" name="phrase[name]" class="form-control" id="phrase-name-<%= phrase.id %>" placeholder="Continue phrase" />
               </div>
-              <input class="btn btn-default" type="submit" data-id="<%= phrase.id %>" value="Add" />
+              <input class="btn btn-default update-phrase" type="submit" data-id="<%= phrase.id %>" value="Add" />
             </form>
           </div>
         </td>
@@ -48,5 +48,5 @@
     </tbody>
   </table>
 </div>
-
-</div>
+<!-- <div class="col-md-4" id="history">
+</div> -->
