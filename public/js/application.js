@@ -26,6 +26,12 @@ $(document).ready(function () {
     ws.send(JSON.stringify({ method: 'show-history', id: id }));
   });
 
+  $('body').on('click', '.clear-history', function(ev){
+    ev.preventDefault();
+
+    $('#history').empty();
+  });
+
   ws.onmessage = function(res){
     res = JSON.parse(res.data)
     if (res.method == 'create'){
@@ -66,15 +72,14 @@ function updatePhrase(data){
 }
 
 function showHistory(data){
-  $('#history').css('display', 'block');
-  $('#history').html('<div class="well well-lg">'+data.phrases.name+'</div>'+historiesTags(data.histories)); 
+  $('#history').html('<a href="#" class="clear-history" style="margin-left: 344px; color: black;">'+
+    '<i class="glyphicon glyphicon-remove-sign"></i></a>'+
+    '<div class="well well-lg">'+data.phrases.name+'</div>'+historiesTags(data.histories)); 
 }
 
 function historiesTags(histories){
   var tags = '';
-  debugger;
   $.each(histories, function(index, history){
-    debugger;
     tags += '<div class="panel panel-defaul">'+
       '<div class="panel-heading"><h3 class="panel-title">'+
       history.created_at+'</h3></div><div class="panel-body">'+
