@@ -27,6 +27,13 @@ module Helpers
     { method: 'update', message: 'The word wasn\'t added!', status: 404 }.to_json
   end
 
+  def show_history(phrase_id)
+    @phrases = Phrase.eager_load(:histories).find(phrase_id)
+    { method: 'show-history', phrases: @phrases, histories: @phrases.histories, status: 200 }.to_json
+  rescue
+    { method: 'show-history', message: 'Not find the history!', status: 404 }.to_json
+  end
+
 private
 
   def check_word(word)

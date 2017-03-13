@@ -1,19 +1,11 @@
 
 <div class="col-md-4" id="new-phrase">
-  <form action="/create_phrase" method="post" role="form" class="form-inline">
-    <div class="form-group">
-      <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" id="name-phrase" />
-    </div>
-    <input class="btn btn-primary create-phrase" type="submit" value="Create"/>
-  </form>
-  <br>
   <div class="jumbotron">
     <h2>Hello, <%= session[:username] %>!</h2>
     <p>I want to play with you in the game.</p>
     <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
   </div>
 </div>
-
 <div class="col-md-4" >
   <table class="table">
     <thead>
@@ -41,12 +33,12 @@
           </div>
         </td>
         <td>
-          <a href="/edit_phrase/<%= phrase.id %>"><span class="glyphicon glyphicon-th-list"></span></a>
+          <a href="#" class="show-history"><span class="glyphicon glyphicon-th-list"></span></a>
         </td>
       </tr>
       <% end %>
     </tbody>
   </table>
 </div>
-<!-- <div class="col-md-4" id="history">
-</div> -->
+<div class="col-md-4" id="history">
+</div>

@@ -51,6 +51,9 @@ get '/' do
         elsif msg['method'] == 'update'
           response = update_phrase(msg, session[:username])
           EM.next_tick { settings.sockets.each{|s| s.send(response) } }
+        elsif msg['method'] == 'show-history'
+          response = show_history(msg['id'])
+          EM.next_tick {settings.sockets.each{|s| s.send(response) } }
         end
       end
       ws.onclose do
@@ -60,24 +63,6 @@ get '/' do
     end
   end
 end
-
-before '/new_phrase' do
-  authorize
-end
-
-get '/new_phrase' do
-  erb :new_phrase, layout: :application
-end
-
-before '/edit_phrase/:id' do
-  authorize
-end
-
-get '/edit_phrase/:id' do
-  @phrase = Phrase.eager_load(:histories).find(params[:id])
-  erb :edit_phrase, layout: :application, local: @phrase
-end
-
 
 before '/sign_up' do
   not_authorize

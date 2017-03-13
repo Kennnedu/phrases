@@ -22,6 +22,12 @@
             </a>
           </div>
           <% if session[:username] %>
+            <form action="/create_phrase" method="post" role="form" class="navbar-form navbar-left">
+              <div class="form-group">
+                <input class="form-control" type="text" name="phrase[name]" placeholder="New Phrase" id="name-phrase" />
+              </div>
+              <input class="btn btn-primary create-phrase" type="submit" value="Create"/>
+            </form>
             <form action="/logout" method="post" class="navbar-form navbar-right">
               <input type="submit" value="Logout" class="btn btn-danger">
             </form>
