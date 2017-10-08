@@ -24,16 +24,4 @@ angular.module('Phrases', []).controller('indexCtrl', function($scope, $http){
       console.log(response);
     });
   }
-
-  $scope.removePhrase = function(phrase){
-    $http({
-      method: 'DELETE',
-      url: '/phrase/' + phrase.id,
-    }).then( function successCallback(response){
-      console.log(response);
-      $scope.phrases.splice($scope.phrases.indexOf(phrase), 1);
-    }, function errorCallback(response){
-      console.log(response);
-    });
-  }
 });
