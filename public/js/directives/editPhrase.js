@@ -5,10 +5,9 @@ function editPhrase(){
     scope: {
       phrase: "="
     },
-    templateUrl: 'templates/edit-phrase.html',
-    link: function(scope){
-      debugger;
-    }
+    templateUrl: 'templates/edit-phrase.html'
+    // link: function(scope){
+    // }
   }
 }
 
