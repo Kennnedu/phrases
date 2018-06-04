@@ -8,7 +8,6 @@ require 'pry'
 
 Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each { |file| require file }
 Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each { |file| require file }
-Dir[File.join(File.dirname(__FILE__), 'controllers', '*.rb')].each { |file| require file }
 
 include Helpers
 
@@ -16,11 +15,9 @@ enable :sessions
 set :session_secret, '1234567'
 set :database, { adapter: 'postgresql',
   encoding: 'unicode', database: 'your_database_name', pool: 2,
-  username: 'roman', password: 'password'}
+  username: 'roman', password: 'password' }
 set :server, 'thin'
 set :sockets, []
-set :assets_paths, %w(assets)
-set :assets_css_compressor, :sass
 register Sinatra::ActiveRecordExtension
 register Sinatra::Flash
 
@@ -28,11 +25,8 @@ after do
   ActiveRecord::Base.clear_active_connections!
 end
 
-before '/' do
-  authorize
-end
-
 get '/' do
+  authorize
   if !request.websocket?
     @phrases = Phrase.all
     @session = session[:username]
@@ -53,7 +47,7 @@ get '/' do
           EM.next_tick { settings.sockets.each{|s| s.send(response) } }
         elsif msg['method'] == 'show-history'
           response = show_history(msg['id'])
-          EM.next_tick {settings.sockets.each{|s| s.send(response) } }
+          EM.next_tick { settings.sockets.each{|s| s.send(response) } }
         end
       end
       ws.onclose do
@@ -64,11 +58,8 @@ get '/' do
   end
 end
 
-before '/sign_up' do
-  not_authorize
-end
-
 get '/sign_up' do
+  not_authorize
   erb :registration, layout: :application
 end
 
@@ -84,11 +75,8 @@ post '/create_user' do
   end
 end
 
-before '/sign_in' do
-  not_authorize
-end
-
 get '/sign_in' do
+  not_authorize
   erb :login, layout: :application
 end
 
