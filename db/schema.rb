@@ -10,23 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2016_11_20_181734) do
+ActiveRecord::Schema.define(version: 2018_06_10_163749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "histories", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "phrase_id"
-    t.string "part_phrase", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["phrase_id"], name: "index_histories_on_phrase_id"
-    t.index ["user_id"], name: "index_histories_on_user_id"
-  end
-
   create_table "phrases", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "current_state", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,6 +27,17 @@ ActiveRecord::Schema.define(version: 2016_11_20_181734) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["username"], name: "index_users_on_username"
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "phrase_id", null: false
+    t.string "word", null: false
+    t.string "previous_phrase", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phrase_id"], name: "index_words_on_phrase_id"
+    t.index ["user_id"], name: "index_words_on_user_id"
   end
 
 end

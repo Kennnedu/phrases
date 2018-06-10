@@ -1,14 +1,10 @@
-.edit-phrase, #hide-new-phrase{
-  display: none;
+.dash-phrase:hover {
+  background-color: #265A88;
+  border-radius: 5px;
+  color: #ffffff;
 }
 
-.dash-phrase:hover{
-    background-color: #265A88;
-    border-radius: 5px;
-    color: #ffffff;
-}
-
-.flash{
+.flash {
   margin-bottom: 10px;
   height: 40px;
   border-radius: 5px;
@@ -16,22 +12,22 @@
   padding-left: 20px;
 }
 
-.info{
+.info {
   background-color: #dff0d8;
   color: #3c763d;
 }
 
-.warning{
+.warning {
   background-color: #f2dede;
   color: #b24455;
 }
 
-#brand{
+#brand {
   height: 50px;
   margin-top: -16px;
 }
 
-#history{
+#history {
   height: 40em;
   width: 32%;
   border-width: 1px;

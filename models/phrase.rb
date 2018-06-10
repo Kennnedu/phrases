@@ -1,6 +1,8 @@
 class Phrase < ActiveRecord::Base
-  has_many :histories
-  has_many :users, through: :histories
+  has_many :words
+  has_many :users, through: :words
 
-  validates :name, presence: true
+  validates :current_state, presence: true
+
+  scope :recent_updated, -> { order(updated_at: 'desc') }
 end
