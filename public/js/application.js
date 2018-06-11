@@ -4,16 +4,35 @@ Vue.component('navigation-bar', {
   data: function(){
     return {
       phrase: {
-        beginingPhrase: ''
+        beginningPhrase: ''
       }
     }
   },
   methods: {
     createPhrase: function(){
+      axios({
+        url: '/create_phrase',
+        method: 'post',
+        params:{
+          beginning_phrase: this.phrase.beginningPhrase
+        }
+      })
+      .then(function(response){
+        // debugger;
+      }).catch(function(response){
+        debugger;
+      });
     }
   }
 });
 
 var app = new Vue({
-  el: "#app"
+  el: "#app",
+  data: {
+    user: {
+      id: '',
+      username: '',
+      phrases: {}
+    }
+  }
 });

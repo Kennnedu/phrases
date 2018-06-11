@@ -30,11 +30,12 @@ end
 
 post '/create_phrase' do
   authorize
-  @phrase = Phrase.new(current_state: params[:phrase][:begining_phrase])
+  @phrase = Phrase.new(current_state: params[:beginning_phrase])
   if @phrase.save
     json id: @phrase.id, phrase: @phrase.current_state
   else
-    json message: @phrase.errors.messages, status: 404
+    status 404
+    json message: @phrase.errors.messages
   end
 end
 
@@ -43,16 +44,17 @@ post '/create_word' do
   @word = Word.new(user_id: session[:user_id], phrase_id: params[:word][:phrase_id].to_i,
     word: params[:word][:word])
   if @word.save
-    json id: @word.id, phrase: @word.word, status: 200
+    json id: @word.id, phrase: @word.word
   else
-    json message: @word.errors.messages, status: 404
+    status 404
+    json message: @word.errors.messages
   end
 end
 
 get '/history/:phrase_id' do
   authorize
   @phrases = Phrase.eager_load(:words).find(params[:phrase_id])
-  json phrases: @phrases, status: 200
+  json phrases: @phrases
 end
 
 get '/sign_up' do

@@ -12,12 +12,6 @@
   </head>
   <body>
     <div class="container" id="app">
-      <navigation-bar username="<%= @username %>"></navigation-bar>
-      <div class="row">
-        <%= yield %>
-      </div>
-    </div>
-    <script type="text/x-template" id="navigation-bar">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -25,17 +19,25 @@
               <img src="/images/logo.png" id="brand">
             </a>
           </div>
-          <template v-if="username.length != 0">
-            <div class="navbar-form navbar-left form-group">
-              <input v-model="phrase.beginningPhrase" class="form-control" placeholder="New Phrase" />
-              <a @click="createPhrase" class="btn btn-primary">Create</a>
-            </div>
-            <form action="/logout" method="post" class="navbar-form navbar-right">
-              <input type="submit" value="Logout" class="btn btn-danger">
-            </form>
-          </template>
+          <navigation-bar username="<%= @username %>"></navigation-bar>
         </div>
       </nav>
+      <div class="row">
+        <%= yield %>
+      </div>
+    </div>
+    <script type="text/x-template" id="navigation-bar">
+      <div>
+        <template v-if="username.length">
+          <div class="navbar-form navbar-left form-group">
+            <input v-model="phrase.beginningPhrase" class="form-control" placeholder="New Phrase" />
+            <a @click="createPhrase" class="btn btn-primary">Create</a>
+          </div>
+          <form action="/logout" method="post" class="navbar-form navbar-right">
+            <input type="submit" value="Logout" class="btn btn-danger">
+          </form>
+        </template>
+      </div>
     </script>
     <script src="/js/application.js"></script>
   </body>
