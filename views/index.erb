@@ -1,39 +1,39 @@
-<div class="col-md-4">
-  <div class="jumbotron">
-    <h2>Hello, <%= session[:username] %>!</h2>
-    <p>I want to play with you in the game. Agrrr...</p>
-    <p><a href="#" role="button">Learn more.</a></p>
+<div class="row">
+  <div class="col-md-12">
+    <div v-bind:class="'alert alert-' + notification.type"
+      v-show="notification.message.length">
+      <a href="#" class="close" @click="changeNotification('','')">x</a>
+      {{ notification.message }}
+    </div>
   </div>
 </div>
-<div class="col-md-4" >
-  <table class="table">
-    <tbody>
-      <% @phrases.each do |phrase| %>
-      <tr>
-        <td class="dash-phrase">
-          <div class="phrase">
-            <%= phrase.current_state %>
-          </div>
-          <div class="edit-phrase">
-            <br>
-            <form action="/create_word" method="post" role="form" class="form-inline">
-              <div class="form-group">
-                <input type="hidden" name="word[phrase_id]" value="<%= phrase.id %>">
-                <input type="text" name="word[word]" class="form-control" placeholder="Continue phrase" />
-              </div>
-              <input class="btn btn-default" type="submit" value="Add" />
-            </form>
-          </div>
-        </td>
-        <td>
-          <a href="/history/<%= phrase.id %>">
-            <span class="glyphicon glyphicon-open"></span
-          ></a>
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<div class="col-md-4" id="history">
+<div class="row">
+  <div class="col-md-4">
+    <div class="jumbotron">
+      <h2>Hello, {{ currentUser.username }}</h2>
+      <p>I want to play with you in the game. Agrrr...</p>
+    </div>
+  </div>
+
+
+  <div class="col-md-4" >
+    <ul class="list-group">
+      <phrase-entry
+        v-for="phrase in sortedPhrases"
+        v-bind:phrase="phrase"
+        v-bind:active-phrase-id="activePhraseId"
+        v-bind:key="phrase.id"
+        v-on:notify="changeNotification"
+        v-on:save-history="saveHistory">
+      </phrase-entry>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row">
+      <history-entry v-for="historyEntry in history"
+                     v-bind:key="historyEntry.id"
+                     v-bind:history-entry="historyEntry"></history-entry>    
+    </div>
+  </div>
 </div>

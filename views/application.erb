@@ -19,18 +19,18 @@
               <img src="/images/logo.png" id="brand">
             </a>
           </div>
-          <navigation-bar username="<%= @username %>"></navigation-bar>
+          <navigation-bar username="<%= @username %>"
+                          v-bind:phrases="phrases"
+                          v-on:notify="changeNotification"></navigation-bar>
         </div>
       </nav>
-      <div class="row">
-        <%= yield %>
-      </div>
+      <%= yield %>
     </div>
     <script type="text/x-template" id="navigation-bar">
       <div>
         <template v-if="username.length">
           <div class="navbar-form navbar-left form-group">
-            <input v-model="phrase.beginningPhrase" class="form-control" placeholder="New Phrase" />
+            <input v-model="beginningPhrase" class="form-control" placeholder="New Phrase" />
             <a @click="createPhrase" class="btn btn-primary">Create</a>
           </div>
           <form action="/logout" method="post" class="navbar-form navbar-right">
@@ -38,6 +38,43 @@
           </form>
         </template>
       </div>
+    </script>
+    <script type="text/x-template" id="phrase-entry">
+      <li class="list-group-item">
+        <div>
+          {{ phrase.current_state }}
+          <span v-bind:class="isOpenedPhrase ? 'glyphicon-menu-up' : 'glyphicon-menu-down'"
+                class="glyphicon pull-right"
+                @click="loadPhraseInfo()"></span>
+        </div>
+        <div v-show="isOpenedPhrase" style="margin-top: 15px;">
+          <div class="form-inline" >
+            <div class="form-group">
+              <input type="text" v-model="newWord" class="form-control" placeholder="Continue phrase" />
+            </div>
+            <a class="btn btn-default" href="#" @click="addNewWord()">Add</a>
+          </div>
+        </div>
+      </li>
+    </script>
+    <script type="text/x-template" id="history-entry">
+      <div class="com-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            {{ historyEntry.word }}
+          </div>
+          <div class="col-md-12">
+            {{ historyEntry.previous_phrase }}
+          </div>
+          <div class="col-md-12">
+            {{ historyEntry.user.username }}
+          </div>
+          <div class="col-md-12">
+            {{ createdDate }}
+          </div>
+        </div>
+        <hr>
+      </div>  
     </script>
     <script src="/js/application.js"></script>
   </body>
